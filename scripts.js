@@ -1,3 +1,5 @@
+import {createOrderHtml, updateDraggingHtml, moveToColumn, html} from './view.js';
+import {TABLES, COLUMNS, state, createOrderData,updateDragging} from './data.js'
 /**
  * A handler that fires when a user drags over any element inside a column. In
  * order to determine which column the user is dragging over the entire event
@@ -28,14 +30,46 @@ const handleDragOver = (event) => {
 }
 
 
-const handleDragStart = (event) => {}
-const handleDragEnd = (event) => {}
-const handleHelpToggle = (event) => {}
-const handleAddToggle = (event) => {}
-const handleAddSubmit = (event) => {}
-const handleEditToggle = (event) => {}
-const handleEditSubmit = (event) => {}
-const handleDelete = (event) => {}
+
+const handleDragStart = (event) => {
+
+}
+
+const handleDragEnd = (event) => {
+
+}
+
+const handleHelpToggle = (event) => {
+    let help = document.querySelector('[data-help-overlay]')
+    help.toggleAttribute('open')
+
+    let button = document.querySelector('[data-add]')
+    button.focus({focusVisible : true})
+}
+
+const handleAddToggle = (event) => {
+    let add = document.querySelector('[data-add-overlay]')
+    add.toggleAttribute('open')
+
+    let button = document.querySelector('[data-add]')
+    button.focus({focusVisible : true})
+}
+
+const handleAddSubmit = (event) => {
+    
+}
+
+const handleEditToggle = (event) => {
+
+}
+
+const handleEditSubmit = (event) => {
+
+}
+
+const handleDelete = (event) => {
+
+}
 
 html.add.cancel.addEventListener('click', handleAddToggle)
 html.other.add.addEventListener('click', handleAddToggle)
