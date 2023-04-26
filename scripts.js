@@ -11,6 +11,8 @@ import {TABLES, COLUMNS, state, createOrderData,updateDragging} from './data.js'
  *
  * @param {Event} event 
  */
+
+let ID = 0
 const handleDragOver = (event) => {
     event.preventDefault();
     const path = event.path || event.composedPath()
@@ -40,31 +42,72 @@ const handleDragEnd = (event) => {
 }
 
 const handleHelpToggle = (event) => {
-    let help = document.querySelector('[data-help-overlay]')
+    const help = document.querySelector('[data-help-overlay]')
     help.toggleAttribute('open')
 
-    let button = document.querySelector('[data-add]')
+    const button = document.querySelector('[data-add]')
     button.focus({focusVisible : true})
+
 }
 
 const handleAddToggle = (event) => {
-    let add = document.querySelector('[data-add-overlay]')
-    add.toggleAttribute('open')
+    const add = document.querySelector('[data-add-overlay]')
+    add.toggleAttribute('open')    
 
-    let button = document.querySelector('[data-add]')
+    const button = document.querySelector('[data-add]')
     button.focus({focusVisible : true})
+
+    const inputBox = document.querySelector('[data-add-title]')
+    inputBox.value = ''
+
+    const tableSelector = document.querySelector('[data-add-table]')
+    tableSelector.value = '1'
 }
 
 const handleAddSubmit = (event) => {
+    event.preventDefault()
+    const input = document.querySelector('[data-add-title]')
+    const title = input.value
+    const id = `order${ID += 1}`
+    const table = document.querySelector('[data-add-table]').value
+    const created = new Date()
+    const order = {
+        id: id,
+        title: title,
+        table: table,
+        created: created,
+    }
+    const container = document.querySelector('[data-column="ordered"]')
+    const newElement = createOrderHtml(order)
+    container.appendChild(newElement)
+
+    const inputBox = document.querySelector('[data-add-title]')
+    inputBox.value = ''
+
+    const tableSelector = document.querySelector('[data-add-table]')
+    tableSelector.value = '1'
     
+    html.add.cancel.click()
+
 }
 
 const handleEditToggle = (event) => {
+    const edit = document.querySelector('[data-edit-overlay]')
+    edit.toggleAttribute('open')    
 
+    const button = document.querySelector('Update')
+    // button.focus({focusVisible : true})
+
+    const inputBox = document.querySelector('[data-edit-title]')
+    inputBox.value = ''
+
+    const tableSelector = document.querySelector('[data-edit-table]')
+    tableSelector.value = '1'
 }
 
 const handleEditSubmit = (event) => {
-
+    
+    
 }
 
 const handleDelete = (event) => {
