@@ -35,20 +35,32 @@ const handleDragOver = (event) => {
 }
 
 
+/**
+ * A handler that fires as soon as the user starts dragging on of the order elements.
+ * 
+ */
+const handleDragStart = () => { 
 
-const handleDragStart = (event) => { 
-    const id = event.target.dataset.id
-    console.log(id)
 }
 
+/**
+ * A handler that fires as soon as the user ends the drag event(on mouse release).
+ * The main purpose of this handler is to determine which column the user is 
+ * hovering over on the mouse release. This is done in order to change the 
+ * styling of the column but also to copy the order over to this specified column
+ * @param {event} event 
+ */
 const handleDragEnd = (event) => {
+    //Get info on target order
     const id = event.target.dataset.id
     const over = state.dragging.over
     const ordered = COLUMNS[0]
     let value = ''
     for (const columnName of COLUMNS) {
         value = columnName === over ? columnName : ''
+        //check the value of column name to determine which coulumns is being dragged into
         if (columnName === over && columnName === 'ordered') {
+            // Call moveToColumn to transfer order over
             moveToColumn(id, columnName)
             const orderedContainer = document.querySelector("body > div.grid > section:nth-child(1)")
             orderedContainer.style.background = 'white'
@@ -67,26 +79,38 @@ const handleDragEnd = (event) => {
 
 }
 
-const handleHelpToggle = (event) => {
+/**
+ * This is an event handler that toggles the help overlay of this page. Once the
+ * user clicks on the help button, the overlay will appear and the focus will be 
+ * set on the cancel button.
+ */
+const handleHelpToggle = () => {
+    //Set focus to cancel button
     const focusItem = document.querySelector('[data-help-cancel]')
     focusItem.focus()
     
+    // Change the attribute value of open to true or false on each click
     const help = document.querySelector('[data-help-overlay]')
     help.toggleAttribute('open')
 
+    //Set focu to add button after toggle
     const button = document.querySelector('[data-add]')
     button.focus()
 
 }
 
-const handleAddToggle = (event) => {
+/**
+ * This event handler toggles the overlay that assists the user in creating a new 
+ * order. It is fired as soon as the user clicks the 'Add Order' button.
+ */
+const handleAddToggle = () => {
     const add = document.querySelector('[data-add-overlay]')
     add.toggleAttribute('open')    
 
 
     const inputBox = document.querySelector('[data-add-title]')
     inputBox.value = ''
-    inputBox.focus({focusVisible:true})
+    inputBox.focus()
 
     const tableSelector = document.querySelector('[data-add-table]')
     tableSelector.value = '1'
@@ -96,8 +120,16 @@ const handleAddToggle = (event) => {
     
 }
 
+/**
+ * This is the event handler that fires when the user adds a new order. It saves
+ * the table number, time created and the order status. These values are all user 
+ * defined.
+ * @param {event} event 
+ */
 const handleAddSubmit = (event) => {
+    //Had to prevent default as it was just submitting and going away
     event.preventDefault()
+    //Creation of order
     const input = document.querySelector('[data-add-title]')
     const title = input.value
     const id = `order${ID_COUNTER += 1}`
@@ -110,6 +142,7 @@ const handleAddSubmit = (event) => {
         created: created,
     }
 
+    //Adding order to 'ordered' column
     const container = document.querySelector('[data-column="ordered"]')
     const newElement = createOrderHtml(order)
     container.appendChild(newElement)
@@ -128,15 +161,18 @@ const handleAddSubmit = (event) => {
 
 }
 
+/**
+ * This event handler is fired as soon as an existing order is clicked. This will 
+ * toggle the edit overlay and allow the user to edit the table number, order status
+ * of the selected order.
+ * @param {event} event 
+ */
 const handleEditToggle = (event) => {
     const focusItem = document.querySelector('.overlay__input')
     focusItem.focus({focusVisible : true})
 
     const edit = document.querySelector('[data-edit-overlay]')
     edit.toggleAttribute('open')    
-
-    // const button = document.querySelector('[data-edit-add]')
-    // button.focus({focusVisible : true})
 
     const inputBox = document.querySelector('[data-edit-title]')
     inputBox.value = ''
@@ -148,6 +184,12 @@ const handleEditToggle = (event) => {
 
 }
 
+/**
+ * This eent handler will fire once the user submits the new information entered
+ * into the input fields. This will update the current order and assign the new 
+ * to it
+ * @param {event} event 
+ */
 const handleEditSubmit = (event) => {
     event.preventDefault()
     const orderParent = document.querySelector(`[data-id="${ID}"]`)
@@ -182,7 +224,13 @@ const handleEditSubmit = (event) => {
     
 }   
 
-const handleDelete = (event) => {
+/**
+ * The main purpose for this event handler is to remove a selected order. It is
+ * fired when the 'delete' button in the edit overlay is clicked
+ * @param {event} event 
+ */
+
+const handleDelete = () => {
     const order = document.querySelector(`[data-id="${ID}"]`)
     order.remove()
 
